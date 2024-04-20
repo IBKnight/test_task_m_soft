@@ -1,18 +1,34 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:test_task_m_soft/common/icons.dart';
 import 'package:test_task_m_soft/common/palette.dart';
 import 'package:test_task_m_soft/common/strings.dart';
+import 'package:test_task_m_soft/features/card_list/data/repositories/card_list_repo_impl.dart';
+import 'package:test_task_m_soft/features/card_list/presentation/bloc/card_list_bloc.dart';
 import 'package:test_task_m_soft/features/card_list/presentation/widget/card_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CardListScreen extends StatefulWidget {
+class CardListScreen extends StatelessWidget {
   const CardListScreen({super.key});
 
   @override
-  State<CardListScreen> createState() => _CardListScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CardListBloc(CardListRepo())..add(LoadCardList()),
+      child: const CardListView(),
+    );
+  }
 }
 
-class _CardListScreenState extends State<CardListScreen> {
+class CardListView extends StatefulWidget {
+  const CardListView({super.key});
+
+  @override
+  State<CardListView> createState() => _CardListViewState();
+}
+
+class _CardListViewState extends State<CardListView> {
   ValueNotifier<bool> _isCollapsed = ValueNotifier(false);
   late ScrollController _scrollController;
 
@@ -143,22 +159,36 @@ class _CardListScreenState extends State<CardListScreen> {
                 height: 16,
               ),
             ),
-            SliverList.separated(
-                itemCount: 100,
-                itemBuilder: (context, index) {
-                  return const ObjectCard(
-                    title: 'ЖК «Цвета радуги»',
-                    filmedTodayCount: 0,
-                    currentSize: 121.1,
-                    filmedTodayCountTotal: 20,
-                    currentSizeTotal: 128,
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    height: 12,
-                  );
-                }),
+            BlocBuilder<CardListBloc, CardListState>(
+              builder: (context, state) {
+                return switch (state) {
+                  CardListLoading _ => const SliverToBoxAdapter(
+                      child: Center(child: CupertinoActivityIndicator())),
+                  CardListLoaded _ => SliverList.separated(
+                      itemCount: state.objectsList.length,
+                      itemBuilder: (context, index) {
+                        final object = state.objectsList[index];
+                        return ObjectCard(
+                          title: object.title,
+                          filmedTodayCount: object.remainingPoints,
+                          currentSize: object.occupiedSpace,
+                          filmedTodayCountTotal: object.totalPointsCount,
+                          currentSizeTotal: state.diskSpace,
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(
+                          height: 12,
+                        );
+                      }),
+                  CardListError _ => SliverToBoxAdapter(
+                      child: Center(
+                        child: Text(state.errorMessage),
+                      ),
+                    )
+                };
+              },
+            ),
           ],
         ),
       ),

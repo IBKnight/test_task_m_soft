@@ -114,7 +114,7 @@ class ObjectCard extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text:
-                                    ' / $currentSizeTotal ${Strings.available}',
+                                    ' / ${currentSizeTotal.toString().replaceAll('.', ',')} ${Strings.gb} ${Strings.available}',
                                 style: const TextStyle(
                                     color: Palette.subtitleColor, fontSize: 11),
                               )

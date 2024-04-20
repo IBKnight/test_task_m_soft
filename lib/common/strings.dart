@@ -6,4 +6,5 @@ abstract class Strings{
   static const String sets = 'Сеты';
   static const String profile = 'Профиль';
   static const String available = 'доступно';
+  static const String gb = 'Гб';
 }
