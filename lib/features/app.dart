@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_task_m_soft/features/card_list/presentation/screen/card_list_screen.dart';
 
 class TestApp extends StatelessWidget {
   const TestApp({super.key});
@@ -8,9 +9,9 @@ class TestApp extends StatelessWidget {
     return MaterialApp(
       title: 'Test Task MS',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        // useMaterial3: true,
       ),
+      home: const CardListScreen(),
     );
   }
 }
