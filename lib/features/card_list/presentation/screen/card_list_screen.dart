@@ -6,6 +6,7 @@ import 'package:test_task_m_soft/common/palette.dart';
 import 'package:test_task_m_soft/common/strings.dart';
 import 'package:test_task_m_soft/features/card_list/data/repositories/card_list_repo_impl.dart';
 import 'package:test_task_m_soft/features/card_list/presentation/bloc/card_list_bloc.dart';
+import 'package:test_task_m_soft/features/card_list/presentation/screen/mock_map_screen.dart';
 import 'package:test_task_m_soft/features/card_list/presentation/widget/card_widget.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,7 +32,7 @@ class CardListView extends StatefulWidget {
 class _CardListViewState extends State<CardListView> {
   ValueNotifier<bool> _isCollapsed = ValueNotifier(false);
   late ScrollController _scrollController;
-  TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController();
   int _selectedIndex = 0;
 
   @override
@@ -53,10 +54,13 @@ class _CardListViewState extends State<CardListView> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
         useLegacyColorScheme: false,
         selectedItemColor: Palette.blue,
-        selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
-        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
+        backgroundColor: Colors.white,
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
         currentIndex: _selectedIndex,
         items: [
           BottomNavigationBarItem(
@@ -103,27 +107,42 @@ class _CardListViewState extends State<CardListView> {
               floating: false,
               pinned: true,
               snap: false,
-              title: ValueListenableBuilder(
+              shadowColor: Palette.shadow2.withOpacity(0.3),
+              leading: ValueListenableBuilder(
                 valueListenable: _isCollapsed,
                 builder: (context, isCollapsed, child) {
                   return isCollapsed
-                      ? Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: SvgPicture.asset(AppIcons.searchIcon),
-                            ),
-                            const Text(Strings.objects),
-                            IconButton(
-                                onPressed: () {},
-                                icon: SvgPicture.asset(AppIcons.infoIcon)),
-                          ],
+                      ? IconButton(
+                          onPressed: () {},
+                          icon: SvgPicture.asset(AppIcons.searchIcon),
                         )
                       : const SizedBox();
                 },
               ),
+              title: ValueListenableBuilder(
+                valueListenable: _isCollapsed,
+                builder: (context, isCollapsed, child) {
+                  return isCollapsed
+                      ? const Text(
+                          Strings.objects,
+                          style: TextStyle(fontSize: 22),
+                        )
+                      : const SizedBox();
+                },
+              ),
+              actions: [
+                ValueListenableBuilder(
+                  valueListenable: _isCollapsed,
+                  builder: (context, isCollapsed, child) {
+                    return isCollapsed
+                        ? IconButton(
+                            onPressed: () {},
+                            icon: SvgPicture.asset(AppIcons.infoIcon),
+                          )
+                        : const SizedBox();
+                  },
+                ),
+              ],
               expandedHeight: 120.0,
               backgroundColor: Palette.bgBlue,
               flexibleSpace: LayoutBuilder(
@@ -204,12 +223,24 @@ class _CardListViewState extends State<CardListView> {
                       itemCount: state.objectsList.length,
                       itemBuilder: (context, index) {
                         final object = state.objectsList[index];
-                        return ObjectCard(
-                          title: object.title,
-                          filmedTodayCount: object.remainingPoints,
-                          currentSize: object.occupiedSpace,
-                          filmedTodayCountTotal: object.totalPointsCount,
-                          currentSizeTotal: state.diskSpace,
+
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => MockMapScreen(
+                                  object: object,
+                                ),
+                              ),
+                            );
+                          },
+                          child: ObjectCard(
+                            title: object.title,
+                            filmedTodayCount: object.remainingPoints,
+                            currentSize: object.occupiedSpace,
+                            filmedTodayCountTotal: object.totalPointsCount,
+                            currentSizeTotal: state.diskSpace,
+                          ),
                         );
                       },
                       separatorBuilder: (context, index) {
@@ -225,6 +256,11 @@ class _CardListViewState extends State<CardListView> {
                 };
               },
             ),
+            const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 12,
+              ),
+            )
           ],
         ),
       ),

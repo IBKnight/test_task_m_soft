@@ -7,4 +7,5 @@ abstract class Strings{
   static const String profile = 'Профиль';
   static const String available = 'доступно';
   static const String gb = 'Гб';
+  static const String emptyList = 'Ничего не найдено';
 }
