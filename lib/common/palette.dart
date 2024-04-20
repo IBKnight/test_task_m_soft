@@ -7,4 +7,5 @@ abstract class Palette {
   static const Color shadow2 = Color.fromRGBO(180, 196, 252, 0.15);
   static const Color title = Color(0xFF1B1B1F);
   static const Color subtitleColor = Color(0xFF6B6C6C);
+  static const Color menuInactive = Color(0xFF65676E);
 }

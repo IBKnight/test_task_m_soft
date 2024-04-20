@@ -32,6 +32,7 @@ class _CardListViewState extends State<CardListView> {
   ValueNotifier<bool> _isCollapsed = ValueNotifier(false);
   late ScrollController _scrollController;
   TextEditingController _textEditingController = TextEditingController();
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -54,16 +55,44 @@ class _CardListViewState extends State<CardListView> {
       bottomNavigationBar: BottomNavigationBar(
         useLegacyColorScheme: false,
         selectedItemColor: Palette.blue,
+        selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
+        unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w500),
+        currentIndex: _selectedIndex,
         items: [
           BottomNavigationBarItem(
-              icon: SvgPicture.asset(AppIcons.objectsIcon),
+              icon: SvgPicture.asset(
+                AppIcons.objectsIcon,
+                colorFilter: const ColorFilter.mode(
+                    Palette.menuInactive, BlendMode.srcIn),
+              ),
+              activeIcon: SvgPicture.asset(
+                AppIcons.objectsIcon,
+                colorFilter:
+                    const ColorFilter.mode(Palette.blue, BlendMode.srcIn),
+              ),
               label: Strings.objects),
           BottomNavigationBarItem(
-              icon: SvgPicture.asset(AppIcons.setsIcon), label: Strings.sets),
+              icon: SvgPicture.asset(AppIcons.setsIcon),
+              activeIcon: SvgPicture.asset(
+                AppIcons.setsIcon,
+                colorFilter:
+                    const ColorFilter.mode(Palette.blue, BlendMode.srcIn),
+              ),
+              label: Strings.sets),
           BottomNavigationBarItem(
               icon: SvgPicture.asset(AppIcons.profileIcon),
+              activeIcon: SvgPicture.asset(
+                AppIcons.profileIcon,
+                colorFilter:
+                    const ColorFilter.mode(Palette.blue, BlendMode.srcIn),
+              ),
               label: Strings.profile),
         ],
+        onTap: (value) {
+          setState(() {
+            _selectedIndex = value;
+          });
+        },
       ),
       backgroundColor: Palette.bgBlue,
       body: SafeArea(
