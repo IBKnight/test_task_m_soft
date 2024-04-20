@@ -173,7 +173,7 @@ class _CardListViewState extends State<CardListView> {
                                   ),
                                   TextField(
                                     controller: _textEditingController,
-                                    onEditingComplete: () {
+                                    onChanged: (value) {
                                       context.read<CardListBloc>().add(
                                           SearchCardList(
                                               _textEditingController.text));
