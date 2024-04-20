@@ -23,22 +23,22 @@ class ObjectCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: DecoratedBox(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(12),
           ),
           boxShadow: [
             BoxShadow(
-              offset: Offset(0, 1),
+              offset: const Offset(0, 1),
               blurRadius: 3,
-              color: Palette.shadow1,
+              color: Palette.shadow1.withOpacity(0.3),
             ),
             BoxShadow(
-              offset: Offset(0, 4),
+              offset: const Offset(0, 4),
               blurRadius: 8,
               spreadRadius: 3,
-              color: Palette.shadow2,
+              color: Palette.shadow2.withOpacity(0.15),
             ),
           ],
         ),
@@ -56,7 +56,7 @@ class ObjectCard extends StatelessWidget {
                       color: Palette.title,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      fontFamily: 'Roboto'),
+                      fontFamily: 'Roboto-Regular'),
                 ),
                 const SizedBox(
                   height: 8,
@@ -72,7 +72,7 @@ class ObjectCard extends StatelessWidget {
                               color: Palette.subtitleColor,
                               fontSize: 11,
                               fontWeight: FontWeight.w500,
-                              fontFamily: 'Roboto'),
+                              fontFamily: 'Roboto-Regular'),
                         ),
                         RichText(
                             text: TextSpan(
@@ -80,7 +80,7 @@ class ObjectCard extends StatelessWidget {
                           style: const TextStyle(
                               color: Palette.title,
                               fontSize: 14,
-                              fontFamily: 'Roboto'),
+                              fontFamily: 'Roboto-Regular'),
                           children: [
                             TextSpan(
                                 text:
@@ -88,7 +88,7 @@ class ObjectCard extends StatelessWidget {
                                 style: const TextStyle(
                                     color: Palette.subtitleColor,
                                     fontSize: 11,
-                                    fontFamily: 'Roboto'))
+                                    fontFamily: 'Roboto-Regular'))
                           ],
                         ))
                       ],
@@ -110,7 +110,7 @@ class ObjectCard extends StatelessWidget {
                             style: const TextStyle(
                                 color: Palette.title,
                                 fontSize: 14,
-                                fontFamily: 'Roboto'),
+                                fontFamily: 'Roboto-Regular'),
                             children: [
                               TextSpan(
                                 text:
