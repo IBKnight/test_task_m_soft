@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:test_task_m_soft/common/icons.dart';
@@ -59,7 +57,6 @@ class _CardListScreenState extends State<CardListScreen> {
               floating: false,
               pinned: true,
               snap: false,
-              collapsedHeight: 60,
               title: ValueListenableBuilder(
                 valueListenable: _isCollapsed,
                 builder: (context, isCollapsed, child) {
@@ -69,8 +66,9 @@ class _CardListScreenState extends State<CardListScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconButton(
-                                onPressed: () {},
-                                icon: SvgPicture.asset(AppIcons.searchIcon)),
+                              onPressed: () {},
+                              icon: SvgPicture.asset(AppIcons.searchIcon),
+                            ),
                             const Text(Strings.objects),
                             IconButton(
                                 onPressed: () {},
