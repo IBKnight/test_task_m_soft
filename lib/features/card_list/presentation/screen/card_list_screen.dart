@@ -31,6 +31,7 @@ class CardListView extends StatefulWidget {
 class _CardListViewState extends State<CardListView> {
   ValueNotifier<bool> _isCollapsed = ValueNotifier(false);
   late ScrollController _scrollController;
+  TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -123,6 +124,12 @@ class _CardListViewState extends State<CardListView> {
                                     height: 16,
                                   ),
                                   TextField(
+                                    controller: _textEditingController,
+                                    onEditingComplete: () {
+                                      context.read<CardListBloc>().add(
+                                          SearchCardList(
+                                              _textEditingController.text));
+                                    },
                                     decoration: InputDecoration(
                                       prefixIcon: IconButton(
                                           onPressed: () {},

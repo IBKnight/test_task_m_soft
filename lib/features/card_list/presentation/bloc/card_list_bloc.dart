@@ -11,6 +11,7 @@ class CardListBloc extends Bloc<CardListEvent, CardListState> {
   final ICardListRepository repository;
   CardListBloc(this.repository) : super(CardListLoading()) {
     on<LoadCardList>(_loadCardList);
+    on<SearchCardList>(_searchCardList);
   }
 
   _loadCardList(LoadCardList event, Emitter<CardListState> emit) async {
@@ -18,6 +19,22 @@ class CardListBloc extends Bloc<CardListEvent, CardListState> {
       emit(CardListLoading());
 
       final List<ObjectEntity> list = await repository.fetchObjects();
+      double diskSpace = await DiskSpaceHandler.getDiskSpace();
+      emit(CardListLoaded(list, diskSpace));
+    } catch (e) {
+      emit(CardListError(e.toString()));
+      rethrow;
+    }
+  }
+
+  _searchCardList(SearchCardList event, Emitter<CardListState> emit) async {
+    try {
+      emit(CardListLoading());
+
+      final List<ObjectEntity> list = (await repository.fetchObjects())
+          .where((element) => element.title.contains(event.query))
+          .toList();
+          
       double diskSpace = await DiskSpaceHandler.getDiskSpace();
       emit(CardListLoaded(list, diskSpace));
     } catch (e) {
